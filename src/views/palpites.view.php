@@ -23,6 +23,7 @@ $participantes=listarParticipantes($connection);
         <a href="?_route=jogos">&#9917; Jogos</a>
         <a href="?_route=palpites" class="active">&#128221; Palpites</a>
         <a href="?_route=participantes">&#128101; Participantes</a>
+        <a href="?_route=acessos">&#128202; Acessos</a>
         <a href="?_route=config">&#9881; Config</a>
     </div>
 

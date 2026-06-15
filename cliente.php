@@ -85,6 +85,7 @@ if (isset($_POST['_acao'])) {
                     $_SESSION['bolao_cliente_nome'] = $row['nome'];
                     $check = mysqli_query($connection, "SELECT id FROM bolao_participantes WHERE cliente_id=".intval($row['id']));
                     if (!$check || mysqli_num_rows($check) == 0) adicionarParticipante($connection, $row['nome'], '', $row['id']);
+                    registrarAcesso($connection, intval($row['id']), $row['nome']);
                     $logado = true;
                 }
             } else { 

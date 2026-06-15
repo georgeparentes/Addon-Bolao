@@ -17,6 +17,15 @@ function criarTabelas($c) {
         nome VARCHAR(100) NOT NULL, telefone VARCHAR(20) DEFAULT '', pontos_total INT DEFAULT 0,
         ativo TINYINT(1) DEFAULT 1, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+    mysqli_query($c, "CREATE TABLE IF NOT EXISTS bolao_acessos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        cliente_id INT NOT NULL,
+        nome VARCHAR(100) NOT NULL,
+        data_acesso DATETIME NOT NULL,
+        ip VARCHAR(45) DEFAULT '',
+        INDEX idx_cliente (cliente_id),
+        INDEX idx_data (data_acesso)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 }
 
 function adicionarJogo($c, $d) {
@@ -117,6 +126,35 @@ function listarParticipantes($c) {
 
 function excluirParticipante($c,$id) { mysqli_query($c,"DELETE FROM bolao_palpites WHERE participante_id=".intval($id)); return mysqli_query($c,"DELETE FROM bolao_participantes WHERE id=".intval($id)); }
 function excluirJogo($c,$id) { mysqli_query($c,"DELETE FROM bolao_palpites WHERE jogo_id=".intval($id)); return mysqli_query($c,"DELETE FROM bolao_jogos WHERE id=".intval($id)); }
+
+function registrarAcesso($c, $clienteId, $nome) {
+    $clienteId = intval($clienteId);
+    $nome = mysqli_real_escape_string($c, $nome);
+    $ip = mysqli_real_escape_string($c, $_SERVER['REMOTE_ADDR'] ?? '');
+    return mysqli_query($c, "INSERT INTO bolao_acessos (cliente_id, nome, data_acesso, ip) VALUES ($clienteId, '$nome', NOW(), '$ip')");
+}
+
+function obterAcessos($c) {
+    $sql = "SELECT cliente_id, nome, 
+            COUNT(*) as total_acessos, 
+            MAX(data_acesso) as ultimo_acesso,
+            MIN(data_acesso) as primeiro_acesso
+            FROM bolao_acessos 
+            GROUP BY cliente_id, nome 
+            ORDER BY ultimo_acesso DESC";
+    $r = mysqli_query($c, $sql);
+    $a = []; if ($r) while($row = mysqli_fetch_assoc($r)) $a[] = $row;
+    return $a;
+}
+
+function obterAcessosDetalhado($c, $clienteId = null) {
+    $sql = "SELECT * FROM bolao_acessos";
+    if ($clienteId) $sql .= " WHERE cliente_id = ".intval($clienteId);
+    $sql .= " ORDER BY data_acesso DESC LIMIT 200";
+    $r = mysqli_query($c, $sql);
+    $a = []; if ($r) while($row = mysqli_fetch_assoc($r)) $a[] = $row;
+    return $a;
+}
 
 function importarJogosCopa2026($c) {
     $r=mysqli_query($c,"SELECT COUNT(*) as t FROM bolao_jogos"); $row=mysqli_fetch_assoc($r); if($row['t']>0) return 0;
