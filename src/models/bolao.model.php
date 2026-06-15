@@ -39,10 +39,8 @@ function registrarResultado($c, $jogoId, $g1, $g2) {
 }
 
 function calcularPontos($r1,$r2,$p1,$p2) {
-    if ($r1==$p1 && $r2==$p2) return 10;
-    if (($r1-$r2)==($p1-$p2)) return 7;
-    if (($r1>$r2&&$p1>$p2)||($r1<$r2&&$p1<$p2)||($r1==$r2&&$p1==$p2)) return 5;
-    if ($r1==$p1||$r2==$p2) return 2;
+    // Só conta se acertou o placar exato
+    if ($r1==$p1 && $r2==$p2) return 1;
     return 0;
 }
 
@@ -51,14 +49,44 @@ function atualizarPontosTotal($c, $pid) {
 }
 
 function registrarPalpite($c, $jid, $pid, $g1, $g2) {
-    // Verificar se o jogo ainda aceita palpites (até 1 hora antes do início)
-    $rJ = mysqli_query($c, "SELECT data_jogo, finalizado FROM bolao_jogos WHERE id = ".intval($jid));
+    // Garantir que são inteiros (0 é válido)
+    $g1 = intval($g1);
+    $g2 = intval($g2);
+    $jid = intval($jid);
+    $pid = intval($pid);
+    
+    // Verificar se o participante está inadimplente (fatura vencida em aberto)
+    $rCli = mysqli_query($c, "SELECT cliente_id FROM bolao_participantes WHERE id = $pid");
+    if ($rCli && $cliRow = mysqli_fetch_assoc($rCli)) {
+        if ($cliRow['cliente_id']) {
+            $cid = intval($cliRow['cliente_id']);
+            $rFat = mysqli_query($c, "SELECT COUNT(*) as qtd FROM sis_titulo WHERE login = (SELECT login FROM sis_cliente WHERE id = $cid) AND status = 'aberto' AND datavenc < CURDATE()");
+            if ($rFat && $fRow = mysqli_fetch_assoc($rFat)) {
+                if (intval($fRow['qtd']) > 0) return false; // cliente inadimplente
+            }
+        }
+    }
+    
+    // Verificar se o jogo ainda aceita palpites (até 10 minutos antes do início)
+    $rJ = mysqli_query($c, "SELECT data_jogo, finalizado FROM bolao_jogos WHERE id = $jid");
     if ($rJ && $j = mysqli_fetch_assoc($rJ)) {
         if ($j['finalizado']) return false; // jogo já finalizado
-        $limite = strtotime($j['data_jogo']) - 3600; // 1 hora antes
+        $limite = strtotime($j['data_jogo']) - 600; // 10 minutos antes
         if (time() > $limite) return false; // passou do horário limite
+    } else {
+        return false; // jogo não encontrado
     }
-    return mysqli_query($c, "INSERT INTO bolao_palpites (jogo_id,participante_id,palpite_gols1,palpite_gols2) VALUES ($jid,$pid,$g1,$g2) ON DUPLICATE KEY UPDATE palpite_gols1=$g1, palpite_gols2=$g2");
+    
+    // Verificar se já existe palpite
+    $rExiste = mysqli_query($c, "SELECT id FROM bolao_palpites WHERE jogo_id = $jid AND participante_id = $pid");
+    if ($rExiste && mysqli_num_rows($rExiste) > 0) {
+        // Atualizar
+        $row = mysqli_fetch_assoc($rExiste);
+        return mysqli_query($c, "UPDATE bolao_palpites SET palpite_gols1 = $g1, palpite_gols2 = $g2 WHERE id = " . $row['id']);
+    } else {
+        // Inserir
+        return mysqli_query($c, "INSERT INTO bolao_palpites (jogo_id, participante_id, palpite_gols1, palpite_gols2) VALUES ($jid, $pid, $g1, $g2)");
+    }
 }
 
 function adicionarParticipante($c, $nome, $tel='', $cid=null) {

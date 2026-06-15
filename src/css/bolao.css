@@ -1,1 +1,560 @@
-/* Bolao - estilos minimos que nao conflitam com MK-AUTH */
+/* ===== BOLAO COPA 2026 - Design Moderno ===== */
+
+/* Variaveis */
+:root {
+    --bolao-primary: #1b5e20;
+    --bolao-primary-light: #2e7d32;
+    --bolao-primary-dark: #0d3d14;
+    --bolao-accent: #43a047;
+    --bolao-gold: #ffc107;
+    --bolao-silver: #90a4ae;
+    --bolao-bronze: #ff8a65;
+    --bolao-danger: #e53935;
+    --bolao-warning: #ff9800;
+    --bolao-info: #1976d2;
+    --bolao-bg: #f0f2f5;
+    --bolao-card: #ffffff;
+    --bolao-border: #e2e8f0;
+    --bolao-text: #1a202c;
+    --bolao-text-muted: #718096;
+    --bolao-radius: 12px;
+    --bolao-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --bolao-shadow-hover: 0 8px 25px rgba(0,0,0,0.12);
+    --bolao-transition: all 0.2s ease;
+}
+
+/* Container principal */
+.bolao-wrapper {
+    padding: 0 16px 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header */
+.bolao-header {
+    text-align: center;
+    padding: 28px 20px 18px;
+    background: linear-gradient(135deg, var(--bolao-primary) 0%, var(--bolao-primary-light) 50%, var(--bolao-accent) 100%);
+    border-radius: 0 0 var(--bolao-radius) var(--bolao-radius);
+    margin: 0 -16px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(27, 94, 32, 0.3);
+}
+
+.bolao-header::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -30%;
+    width: 160%;
+    height: 220%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.bolao-header h2 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.3px;
+    position: relative;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.bolao-header p {
+    color: rgba(255,255,255,0.85);
+    font-size: 12px;
+    margin-top: 4px;
+    position: relative;
+}
+
+/* Mensagens */
+.bolao-msg {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bolao-msg-success {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.bolao-msg-error {
+    background: linear-gradient(135deg, #ffebee, #fce4ec);
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+/* Navegacao / Tabs */
+.bolao-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    background: var(--bolao-card);
+    border-radius: var(--bolao-radius);
+    padding: 5px;
+    border: 1px solid var(--bolao-border);
+    box-shadow: var(--bolao-shadow);
+    flex-wrap: wrap;
+}
+
+.bolao-nav a {
+    flex: 1;
+    min-width: 70px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--bolao-text-muted);
+    transition: var(--bolao-transition);
+    white-space: nowrap;
+}
+
+.bolao-nav a:hover {
+    color: var(--bolao-text);
+    background: #f7fafc;
+}
+
+.bolao-nav a.active {
+    background: linear-gradient(135deg, var(--bolao-primary), var(--bolao-accent));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+/* Cards */
+.bolao-card {
+    background: var(--bolao-card);
+    border: 1px solid var(--bolao-border);
+    border-radius: var(--bolao-radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: var(--bolao-shadow);
+    transition: var(--bolao-transition);
+}
+
+.bolao-card:hover {
+    box-shadow: var(--bolao-shadow-hover);
+}
+
+.bolao-card-header {
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--bolao-text);
+    border-bottom: 1px solid var(--bolao-border);
+    background: linear-gradient(135deg, #fafbfc, #f7f9fb);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bolao-card-body {
+    padding: 16px 18px;
+}
+
+/* Layout Flex */
+.bolao-grid {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.bolao-grid .col-main {
+    flex: 2;
+    min-width: 320px;
+}
+
+.bolao-grid .col-side {
+    flex: 1;
+    min-width: 260px;
+}
+
+/* Tabela Ranking */
+.bolao-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.bolao-table thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bolao-text-muted);
+    border-bottom: 2px solid var(--bolao-border);
+    background: #fafbfc;
+}
+
+.bolao-table thead th:last-child {
+    text-align: center;
+}
+
+.bolao-table tbody tr {
+    transition: var(--bolao-transition);
+}
+
+.bolao-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.bolao-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.bolao-table tbody td:last-child {
+    text-align: center;
+}
+
+/* Posicoes no ranking */
+.rank-pos {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.rank-1 { background: linear-gradient(135deg, #fff8e1, #ffecb3); box-shadow: 0 2px 8px rgba(255,193,7,0.3); }
+.rank-2 { background: linear-gradient(135deg, #eceff1, #cfd8dc); }
+.rank-3 { background: linear-gradient(135deg, #fbe9e7, #ffccbc); }
+.rank-other { background: #f1f5f9; font-size: 12px; color: var(--bolao-text-muted); }
+
+.rank-name {
+    font-weight: 600;
+    color: var(--bolao-text);
+}
+
+.rank-pts {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--bolao-primary-light);
+    text-align: center;
+}
+
+/* Proximo Jogo Card */
+.jogo-card {
+    padding: 12px;
+    border: 1px solid var(--bolao-border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    text-align: center;
+    transition: var(--bolao-transition);
+    background: linear-gradient(135deg, #fafffe, #f8fdf9);
+}
+
+.jogo-card:hover {
+    border-color: #a5d6a7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.08);
+}
+
+.jogo-card .jogo-data {
+    font-size: 11px;
+    color: var(--bolao-text-muted);
+    margin-bottom: 4px;
+}
+
+.jogo-card .jogo-times {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bolao-text);
+}
+
+.jogo-card .jogo-times .vs {
+    color: var(--bolao-text-muted);
+    font-weight: 400;
+    margin: 0 6px;
+    font-size: 12px;
+}
+
+.jogo-card .jogo-local {
+    font-size: 10px;
+    color: var(--bolao-text-muted);
+    margin-top: 3px;
+}
+
+/* Botoes */
+.bolao-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--bolao-transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.bolao-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.bolao-btn:active {
+    transform: translateY(0);
+}
+
+.bolao-btn-primary {
+    background: linear-gradient(135deg, var(--bolao-primary), var(--bolao-accent));
+    color: #fff;
+}
+
+.bolao-btn-warning {
+    background: linear-gradient(135deg, #e65100, var(--bolao-warning));
+    color: #fff;
+}
+
+.bolao-btn-danger {
+    background: linear-gradient(135deg, #b71c1c, var(--bolao-danger));
+    color: #fff;
+}
+
+.bolao-btn-info {
+    background: linear-gradient(135deg, #0d47a1, var(--bolao-info));
+    color: #fff;
+}
+
+.bolao-btn-sm {
+    height: 30px;
+    padding: 0 12px;
+    font-size: 11px;
+    border-radius: 6px;
+}
+
+.bolao-btn-full {
+    width: 100%;
+}
+
+/* Inputs */
+.bolao-input {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--bolao-border);
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    transition: var(--bolao-transition);
+    background: #fff;
+    color: var(--bolao-text);
+}
+
+.bolao-input:focus {
+    border-color: var(--bolao-primary-light);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.bolao-select {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--bolao-border);
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    transition: var(--bolao-transition);
+}
+
+.bolao-select:focus {
+    border-color: var(--bolao-primary-light);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Form inline */
+.bolao-form-inline {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.bolao-form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Label */
+.bolao-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--bolao-text-muted);
+    margin-bottom: 4px;
+}
+
+/* Badge de fase */
+.bolao-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.bolao-badge-fase {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+}
+
+.bolao-badge-finalizado {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+}
+
+/* Placar inputs */
+.placar-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.placar-form input[type="number"] {
+    width: 42px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid var(--bolao-border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    transition: var(--bolao-transition);
+}
+
+.placar-form input[type="number"]:focus {
+    border-color: var(--bolao-primary-light);
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+.placar-form .placar-set input[type="number"] {
+    border-color: var(--bolao-primary-light);
+    background: #f1f8e9;
+}
+
+/* Regras */
+.bolao-regras {
+    text-align: center;
+    padding: 20px;
+}
+
+.bolao-regras strong {
+    display: block;
+    font-size: 15px;
+    color: var(--bolao-text);
+    margin-bottom: 4px;
+}
+
+.bolao-regras span {
+    font-size: 12px;
+    color: var(--bolao-text-muted);
+}
+
+/* Icone delete */
+.bolao-btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: var(--bolao-transition);
+    opacity: 0.5;
+}
+
+.bolao-btn-icon:hover {
+    background: #fee2e2;
+    opacity: 1;
+}
+
+/* Palpite badges */
+.palpite-badge {
+    display: inline-block;
+    margin: 2px 3px 2px 0;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.palpite-acerto { background: linear-gradient(135deg, #c8e6c9, #a5d6a7); color: #1b5e20; }
+.palpite-parcial { background: linear-gradient(135deg, #fff9c4, #fff176); color: #f57f17; }
+.palpite-erro { background: linear-gradient(135deg, #ffcdd2, #ef9a9a); color: #b71c1c; }
+.palpite-pendente { background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; }
+
+/* Empty state */
+.bolao-empty {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--bolao-text-muted);
+    font-size: 13px;
+}
+
+.bolao-empty a {
+    color: var(--bolao-primary-light);
+    font-weight: 600;
+}
+
+/* Config actions */
+.bolao-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bolao-grid {
+        flex-direction: column;
+    }
+    .bolao-grid .col-main,
+    .bolao-grid .col-side {
+        min-width: 100%;
+    }
+    .bolao-form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .bolao-nav {
+        gap: 2px;
+    }
+    .bolao-nav a {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}

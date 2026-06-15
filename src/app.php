@@ -18,6 +18,7 @@ switch($get_route) {
     case "jogos": include(__DIR__ . '/views/jogos.view.php'); break;
     case "palpites": include(__DIR__ . '/views/palpites.view.php'); break;
     case "participantes": include(__DIR__ . '/views/participantes.view.php'); break;
+    case "acertos": include(__DIR__ . '/views/acertos.view.php'); break;
     case "config": include(__DIR__ . '/views/config.view.php'); break;
     default: include(__DIR__ . '/views/inicio.view.php'); break;
 }
