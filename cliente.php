@@ -9,36 +9,17 @@ $logado = isset($_SESSION['bolao_cliente_id']);
 $msg = ''; $msgErro = '';
 
 // Verifica se cliente tem titulo vencido no MK-AUTH
-// Tabela correta: sis_lanc (lancamentos financeiros)
+// Tabela: sis_lanc | Busca apenas por login | Status 'vencido' | Ultimos 90 dias
 function clienteEmAtraso($con, $cid) {
     $cid = intval($cid);
-    $rc = mysqli_query($con, "SELECT login, nome FROM sis_cliente WHERE id = $cid LIMIT 1");
+    $rc = mysqli_query($con, "SELECT login FROM sis_cliente WHERE id = $cid LIMIT 1");
     if (!$rc || !($c = mysqli_fetch_assoc($rc))) return false;
     $lg = mysqli_real_escape_string($con, trim($c['login'] ?? ''));
-    $nm = mysqli_real_escape_string($con, trim($c['nome'] ?? ''));
+    if ($lg === '') return false;
     
-    // Buscar em sis_lanc por login - status vencido
-    if ($lg !== '') {
-        $q = @mysqli_query($con, "SELECT id FROM sis_lanc WHERE login='$lg' AND LOWER(TRIM(status))='vencido' LIMIT 1");
-        if ($q && mysqli_num_rows($q) > 0) return true;
-        // Qualquer titulo nao pago com vencimento passado
-        $q2 = @mysqli_query($con, "SELECT id FROM sis_lanc WHERE login='$lg' AND LOWER(TRIM(status)) NOT IN ('pago','cancelado','removido') AND datavenc < CURDATE() LIMIT 1");
-        if ($q2 && mysqli_num_rows($q2) > 0) return true;
-    }
-    
-    // Buscar em sis_lanc por id_cliente
-    $q3 = @mysqli_query($con, "SELECT id FROM sis_lanc WHERE id_cliente=$cid AND LOWER(TRIM(status))='vencido' LIMIT 1");
-    if ($q3 && mysqli_num_rows($q3) > 0) return true;
-    $q4 = @mysqli_query($con, "SELECT id FROM sis_lanc WHERE id_cliente=$cid AND LOWER(TRIM(status)) NOT IN ('pago','cancelado','removido') AND datavenc < CURDATE() LIMIT 1");
-    if ($q4 && mysqli_num_rows($q4) > 0) return true;
-    
-    // Buscar em sis_boleto tambem (fallback)
-    if ($lg !== '') {
-        $q5 = @mysqli_query($con, "SELECT id FROM sis_boleto WHERE login='$lg' AND LOWER(TRIM(status))='vencido' LIMIT 1");
-        if ($q5 && mysqli_num_rows($q5) > 0) return true;
-    }
-    $q6 = @mysqli_query($con, "SELECT id FROM sis_boleto WHERE id_cliente=$cid AND LOWER(TRIM(status))='vencido' LIMIT 1");
-    if ($q6 && mysqli_num_rows($q6) > 0) return true;
+    // Buscar titulo com status 'vencido' vinculado ao login do cliente
+    $q = @mysqli_query($con, "SELECT id FROM sis_lanc WHERE login='$lg' AND LOWER(TRIM(status))='vencido' AND datavenc >= DATE_SUB(CURDATE(), INTERVAL 90 DAY) LIMIT 1");
+    if ($q && mysqli_num_rows($q) > 0) return true;
     
     return false;
 }
