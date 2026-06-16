@@ -4,7 +4,7 @@ $detalhe = isset($_GET['cliente_id']) ? obterAcessosDetalhado($connection, intva
 $totalGeral = 0;
 foreach ($acessos as $a) $totalGeral += $a['total_acessos'];
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">

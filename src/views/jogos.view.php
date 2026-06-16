@@ -7,7 +7,7 @@ elseif($_tipoAcao==='excluir_jogo'){excluirJogo($connection,$_POST['id']);$msg="
 $fase=isset($_GET['fase'])?$_GET['fase']:'todos';
 $jogos=obterJogos($connection,$fase);
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">
@@ -51,68 +51,48 @@ $jogos=obterJogos($connection,$fase);
         </div>
     </div>
 
-    <!-- Tabela de Jogos -->
+    <!-- Lista de Jogos -->
     <div class="bolao-card">
         <div class="bolao-card-header">&#128203; LISTA DE JOGOS (<?php echo count($jogos); ?>)</div>
-        <div class="bolao-card-body" style="padding:0;overflow-x:auto;">
-            <table class="bolao-table">
-                <thead>
-                    <tr>
-                        <th>DATA</th>
-                        <th>FASE</th>
-                        <th>JOGO</th>
-                        <th style="text-align:center;">PLACAR</th>
-                        <th>LOCAL</th>
-                        <th style="text-align:center;width:40px;">X</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if(empty($jogos)): ?>
-                <tr><td colspan="6" class="bolao-empty">Nenhum jogo cadastrado</td></tr>
-                <?php else: foreach($jogos as $j): ?>
-                <tr style="<?php echo $j['finalizado']?'background:#f9fbe7;':''; ?>">
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;"><?php echo date('d/m H:i',strtotime($j['data_jogo'])); ?></td>
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;">
-                        <span class="bolao-badge bolao-badge-fase"><?php echo strtoupper($j['fase']).' '.$j['grupo']; ?></span>
-                    </td>
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;font-weight:700;"><?php echo $j['time1'].' x '.$j['time2']; ?></td>
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;text-align:center;">
-                        <?php if($j['finalizado']): ?>
-                        <form method="post" class="placar-form">
-                            <input type="hidden" name="_tipoAcao" value="resultado">
-                            <input type="hidden" name="jogo_id" value="<?php echo $j['id']; ?>">
-                            <span class="placar-set">
-                                <input type="number" name="gols1" min="0" value="<?php echo $j['gols1']; ?>">
-                            </span>
-                            <strong style="color:#999;">-</strong>
-                            <span class="placar-set">
-                                <input type="number" name="gols2" min="0" value="<?php echo $j['gols2']; ?>">
-                            </span>
-                            <button type="submit" class="bolao-btn bolao-btn-warning bolao-btn-sm">Editar</button>
-                        </form>
-                        <?php else: ?>
-                        <form method="post" class="placar-form">
-                            <input type="hidden" name="_tipoAcao" value="resultado">
-                            <input type="hidden" name="jogo_id" value="<?php echo $j['id']; ?>">
-                            <input type="number" name="gols1" min="0" value="0">
-                            <strong style="color:#ccc;">-</strong>
-                            <input type="number" name="gols2" min="0" value="0">
-                            <button type="submit" class="bolao-btn bolao-btn-primary bolao-btn-sm">OK</button>
-                        </form>
-                        <?php endif; ?>
-                    </td>
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;font-size:11px;color:#718096;"><?php echo $j['local_jogo']; ?></td>
-                    <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;text-align:center;">
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" name="_tipoAcao" value="excluir_jogo">
-                            <input type="hidden" name="id" value="<?php echo $j['id']; ?>">
-                            <button type="submit" onclick="return confirm('Excluir este jogo?')" class="bolao-btn-icon">&#128465;</button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; endif; ?>
-                </tbody>
-            </table>
+        <div class="bolao-card-body" style="padding:8px!important;">
+            <?php if(empty($jogos)): ?>
+            <div class="bolao-empty">Nenhum jogo cadastrado</div>
+            <?php else: foreach($jogos as $j): ?>
+            <div style="border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:8px;background:<?php echo $j['finalizado']?'#f9fbe7':'#fff'; ?>;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-size:10px;color:#718096;"><?php echo date('d/m H:i',strtotime($j['data_jogo'])); ?></span>
+                    <span class="bolao-badge bolao-badge-fase"><?php echo strtoupper($j['fase']).' '.$j['grupo']; ?></span>
+                    <form method="post" style="display:inline;margin:0;">
+                        <input type="hidden" name="_tipoAcao" value="excluir_jogo">
+                        <input type="hidden" name="id" value="<?php echo $j['id']; ?>">
+                        <button type="submit" onclick="return confirm('Excluir?')" class="bolao-btn-icon" style="font-size:12px!important;">&#128465;</button>
+                    </form>
+                </div>
+                <div style="font-weight:700;font-size:14px;text-align:center;margin-bottom:4px;"><?php echo bandeiraPais($j['time1']).' '.$j['time1']; ?> x <?php echo $j['time2'].' '.bandeiraPais($j['time2']); ?></div>
+                <?php if($j['local_jogo']): ?><div style="font-size:9px;color:#718096;text-align:center;margin-bottom:6px;"><?php echo $j['local_jogo']; ?></div><?php endif; ?>
+                <div style="text-align:center;">
+                    <?php if($j['finalizado']): ?>
+                    <form method="post" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+                        <input type="hidden" name="_tipoAcao" value="resultado">
+                        <input type="hidden" name="jogo_id" value="<?php echo $j['id']; ?>">
+                        <input type="number" name="gols1" min="0" value="<?php echo $j['gols1']; ?>" style="width:50px;height:38px;text-align:center;border:2px solid #2e7d32;border-radius:8px;font-size:18px;font-weight:800;background:#f1f8e9;outline:none;">
+                        <strong style="color:#999;font-size:16px;">-</strong>
+                        <input type="number" name="gols2" min="0" value="<?php echo $j['gols2']; ?>" style="width:50px;height:38px;text-align:center;border:2px solid #2e7d32;border-radius:8px;font-size:18px;font-weight:800;background:#f1f8e9;outline:none;">
+                        <button type="submit" class="bolao-btn bolao-btn-warning bolao-btn-sm">Editar</button>
+                    </form>
+                    <?php else: ?>
+                    <form method="post" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+                        <input type="hidden" name="_tipoAcao" value="resultado">
+                        <input type="hidden" name="jogo_id" value="<?php echo $j['id']; ?>">
+                        <input type="number" name="gols1" min="0" value="0" style="width:50px;height:38px;text-align:center;border:2px solid #e2e8f0;border-radius:8px;font-size:18px;font-weight:800;background:#fff;outline:none;">
+                        <strong style="color:#ccc;font-size:16px;">-</strong>
+                        <input type="number" name="gols2" min="0" value="0" style="width:50px;height:38px;text-align:center;border:2px solid #e2e8f0;border-radius:8px;font-size:18px;font-weight:800;background:#fff;outline:none;">
+                        <button type="submit" class="bolao-btn bolao-btn-primary bolao-btn-sm" style="height:38px!important;padding:0 14px!important;font-size:12px!important;">OK</button>
+                    </form>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; endif; ?>
         </div>
     </div>
 </div>

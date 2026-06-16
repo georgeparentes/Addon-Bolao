@@ -127,6 +127,80 @@ function listarParticipantes($c) {
 function excluirParticipante($c,$id) { mysqli_query($c,"DELETE FROM bolao_palpites WHERE participante_id=".intval($id)); return mysqli_query($c,"DELETE FROM bolao_participantes WHERE id=".intval($id)); }
 function excluirJogo($c,$id) { mysqli_query($c,"DELETE FROM bolao_palpites WHERE jogo_id=".intval($id)); return mysqli_query($c,"DELETE FROM bolao_jogos WHERE id=".intval($id)); }
 
+// Retorna HTML com imagem da bandeira do pais
+function bandeiraPais($nome) {
+    $codigos = [
+        'brasil'=>'br','brazil'=>'br',
+        'argentina'=>'ar',
+        'alemanha'=>'de','germany'=>'de',
+        'franca'=>'fr','frança'=>'fr','france'=>'fr',
+        'espanha'=>'es','spain'=>'es',
+        'portugal'=>'pt',
+        'italia'=>'it','itália'=>'it','italy'=>'it',
+        'inglaterra'=>'gb-eng','england'=>'gb-eng',
+        'eua'=>'us','estados unidos'=>'us','usa'=>'us',
+        'mexico'=>'mx','méxico'=>'mx',
+        'canada'=>'ca','canadá'=>'ca',
+        'japao'=>'jp','japão'=>'jp','japan'=>'jp',
+        'coreia do sul'=>'kr','coreia'=>'kr',
+        'australia'=>'au','austrália'=>'au',
+        'holanda'=>'nl','paises baixos'=>'nl','netherlands'=>'nl',
+        'belgica'=>'be','bélgica'=>'be',
+        'croacia'=>'hr','croácia'=>'hr',
+        'uruguai'=>'uy',
+        'colombia'=>'co','colômbia'=>'co',
+        'chile'=>'cl',
+        'peru'=>'pe',
+        'equador'=>'ec',
+        'paraguai'=>'py',
+        'venezuela'=>'ve',
+        'bolivia'=>'bo','bolívia'=>'bo',
+        'senegal'=>'sn',
+        'marrocos'=>'ma',
+        'camaroes'=>'cm','camarões'=>'cm',
+        'gana'=>'gh',
+        'nigeria'=>'ng','nigéria'=>'ng',
+        'egito'=>'eg',
+        'tunisia'=>'tn','tunísia'=>'tn',
+        'argelia'=>'dz','argélia'=>'dz',
+        'costa do marfim'=>'ci',
+        'africa do sul'=>'za','áfrica do sul'=>'za',
+        'arabia saudita'=>'sa','arábia saudita'=>'sa',
+        'ira'=>'ir','irã'=>'ir',
+        'qatar'=>'qa',
+        'costa rica'=>'cr',
+        'panama'=>'pa','panamá'=>'pa',
+        'honduras'=>'hn',
+        'jamaica'=>'jm',
+        'haiti'=>'ht',
+        'trinidad e tobago'=>'tt',
+        'suica'=>'ch','suíça'=>'ch',
+        'dinamarca'=>'dk',
+        'suecia'=>'se','suécia'=>'se',
+        'noruega'=>'no',
+        'polonia'=>'pl','polônia'=>'pl',
+        'servia'=>'rs','sérvia'=>'rs',
+        'turquia'=>'tr',
+        'russia'=>'ru','rússia'=>'ru',
+        'ucrania'=>'ua','ucrânia'=>'ua',
+        'gales'=>'gb-wls',
+        'escocia'=>'gb-sct','escócia'=>'gb-sct',
+        'irlanda'=>'ie',
+        'austria'=>'at','áustria'=>'at',
+        'grecia'=>'gr','grécia'=>'gr',
+        'republica tcheca'=>'cz','rep. tcheca'=>'cz',
+        'nova zelandia'=>'nz','nova zelândia'=>'nz',
+        'china'=>'cn',
+        'india'=>'in','índia'=>'in',
+    ];
+    $chave = mb_strtolower(trim($nome));
+    if (isset($codigos[$chave])) {
+        $cod = $codigos[$chave];
+        return '<img src="https://flagcdn.com/32x24/'.$cod.'.png" alt="'.$cod.'" style="vertical-align:middle;margin:0 3px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2);">';
+    }
+    return '';
+}
+
 function registrarAcesso($c, $clienteId, $nome) {
     $clienteId = intval($clienteId);
     $nome = mysqli_real_escape_string($c, $nome);

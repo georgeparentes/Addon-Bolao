@@ -11,7 +11,7 @@ $rAcertos = mysqli_query($connection, $sql);
 $acertos = [];
 if ($rAcertos) { while ($row = mysqli_fetch_assoc($rAcertos)) $acertos[] = $row; }
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">

@@ -9,7 +9,7 @@ elseif($_tipoAcao==='importar_clientes'){
 }elseif($_tipoAcao==='excluir_participante'){excluirParticipante($connection,$_POST['id']);$msg="Removido!";}
 $participantes=listarParticipantes($connection);
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">

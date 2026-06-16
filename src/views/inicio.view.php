@@ -8,7 +8,7 @@ $ranking = obterRanking($connection);
 $jogos = obterJogos($connection,'todos');
 $proximos = array_values(array_filter($jogos, function($j){return !$j['finalizado'];}));
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">
@@ -81,7 +81,7 @@ $proximos = array_values(array_filter($jogos, function($j){return !$j['finalizad
                     <?php else: foreach(array_slice($proximos,0,5) as $j): ?>
                     <div class="jogo-card">
                         <div class="jogo-data"><?php echo date('d/m H:i',strtotime($j['data_jogo'])); ?></div>
-                        <div class="jogo-times"><?php echo $j['time1']; ?><span class="vs">x</span><?php echo $j['time2']; ?></div>
+                        <div class="jogo-times"><?php echo bandeiraPais($j['time1']).' '.$j['time1']; ?><span class="vs">x</span><?php echo $j['time2'].' '.bandeiraPais($j['time2']); ?></div>
                         <div class="jogo-local"><?php echo $j['local_jogo']; ?></div>
                     </div>
                     <?php endforeach; endif; ?>

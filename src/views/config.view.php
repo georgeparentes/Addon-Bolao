@@ -5,7 +5,7 @@ if($_tipoAcao==='resetar'){mysqli_query($connection,"TRUNCATE TABLE bolao_palpit
 elseif($_tipoAcao==='limpar'){mysqli_query($connection,"TRUNCATE TABLE bolao_palpites");mysqli_query($connection,"TRUNCATE TABLE bolao_participantes");mysqli_query($connection,"TRUNCATE TABLE bolao_jogos");$msg="Tudo apagado!";}
 elseif($_tipoAcao==='importar_jogos'){$q=importarJogosCopa2026($connection);$msg=$q>0?"$q jogos importados!":"Ja importados.";}
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">

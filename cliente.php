@@ -242,7 +242,7 @@ body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f1923 
     <div class="jogo-d"><?php echo date('d/m',strtotime($j['data_jogo']));?><br><small><?php echo date('H:i',strtotime($j['data_jogo']));?></small>
         <?php if(!$ja && !$expirou && $tempoRestante < 7200):?><br><small style="color:#ef5350;font-size:9px;">Fecha em <?php echo floor($tempoRestante/3600).'h'.str_pad(floor(($tempoRestante%3600)/60),2,'0',STR_PAD_LEFT);?></small><?php endif;?>
     </div>
-    <div class="jogo-t"><?php echo $j['time1'];?><span class="vs">vs</span><?php echo $j['time2'];?></div>
+    <div class="jogo-t"><?php echo bandeiraPais($j['time1']).' '.$j['time1'];?><span class="vs">vs</span><?php echo $j['time2'].' '.bandeiraPais($j['time2']);?></div>
     <div class="jogo-p">
         <?php if($ja):?><span class="pf"><?php echo $meusPalpites[$j['id']]['palpite_gols1'].' x '.$meusPalpites[$j['id']]['palpite_gols2'];?></span>
         <?php elseif($expirou):?><span class="encerrado">Encerrado</span>
@@ -268,7 +268,7 @@ if ($meuId) {
     ?>
     <div class="jogo">
         <div class="jogo-d"><?php echo date('d/m',strtotime($h['data_jogo']));?></div>
-        <div class="jogo-t"><?php echo $h['time1'];?><span class="vs">vs</span><?php echo $h['time2'];?></div>
+        <div class="jogo-t"><?php echo bandeiraPais($h['time1']).' '.$h['time1'];?><span class="vs">vs</span><?php echo $h['time2'].' '.bandeiraPais($h['time2']);?></div>
         <div class="jogo-p" style="display:flex;flex-direction:column;gap:2px;align-items:center;">
             <span style="font-size:11px;color:rgba(255,255,255,0.5);">Palpite: <strong style="color:#fff"><?php echo $h['palpite_gols1'].'x'.$h['palpite_gols2'];?></strong></span>
             <?php if($h['finalizado']):?><span style="font-size:11px;color:rgba(255,255,255,0.5);">Real: <strong class="plf" style="font-size:10px;padding:2px 6px;"><?php echo $h['gols1'].'x'.$h['gols2'];?></strong></span>
@@ -300,7 +300,7 @@ if(empty($ganhadores)):?><p style="text-align:center;color:rgba(255,255,255,0.4)
 <?php else: foreach($finalizados as $j): $mp=isset($meusPalpites[$j['id']])?$meusPalpites[$j['id']]:null;?>
 <div class="jogo">
     <div class="jogo-d"><?php echo date('d/m',strtotime($j['data_jogo']));?></div>
-    <div class="jogo-t"><?php echo $j['time1'];?> <span class="plf"><?php echo $j['gols1'].' - '.$j['gols2'];?></span> <?php echo $j['time2'];?></div>
+    <div class="jogo-t"><?php echo bandeiraPais($j['time1']).' '.$j['time1'];?> <span class="plf"><?php echo $j['gols1'].' - '.$j['gols2'];?></span> <?php echo $j['time2'].' '.bandeiraPais($j['time2']);?></div>
     <div class="jogo-p"><?php if($mp):?><div style="font-size:10px;color:rgba(255,255,255,0.5);">Seu: <?php echo $mp['palpite_gols1'].'x'.$mp['palpite_gols2'];?></div><div class="pts-ganho">+<?php echo $mp['pontos'];?></div><?php else:?><span class="pts-zero" style="font-size:11px;">--</span><?php endif;?></div>
 </div>
 <?php endforeach;endif;?>

@@ -6,7 +6,7 @@ $jogos=obterJogos($connection,'todos');
 $abertos=array_values(array_filter($jogos,function($j){return !$j['finalizado'];}));
 $participantes=listarParticipantes($connection);
 ?>
-<head><link href="src/css/bolao.css" rel="stylesheet" type="text/css"></head>
+<?php include(__DIR__ . '/_css.php'); ?>
 
 <div class="bolao-wrapper">
     <div class="bolao-header">
